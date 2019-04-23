@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>时间转换</title>
+</head>
+<body>
+
+</body>
+<script>
+
+function weekTime(value){
+    let text="";
+    let time=value.replace(/-/g,"/").split(" ");
+    let getTime=new Date();
+    let MM=getTime.getMonth()+1;
+    MM=MM<10?"0"+MM:MM;
+    let DD=getTime.getDate();
+    DD=DD<10?"0"+DD:DD;
+    let YMD=getTime.getFullYear()+"/"+MM+"/"+DD;
+    let week=getTime.getDay();
+    week=week==0?7:week;
+    let weekStart=DD-week+1;
+    let weekEnd=DD+7-week;
+    console.log(YMD,time,week,weekStart,weekEnd,getTime.getFullYear()+"/"+MM+"/"+weekStart);
+    if(YMD==time[0]){
+        text="今日 "+time[1]
+    }else if(new Date(time[0])>new Date(getTime.getFullYear()+"/"+MM+"/"+weekStart) && new Date(time[0])< new Date(getTime.getFullYear()+"/"+MM+"/"+weekEnd)){
+        text=value
+    }else{
+        let w="";
+        let wek=new Date(time[0]).getDay();
+        if(wek==1){
+            w="一";
+        }else if(wek==2){
+            w="二";
+        }else if(wek==3){
+            w="三";
+        }else if(wek==4){
+            w="四";
+        }else if(wek==5){
+            w="五";
+        }else if(wek==6){
+            w="六";
+        }else if(wek==0){
+            w="日";
+        }
+        text="星期"+w+" "+time[1] ;
+
+    }
+    console.log(text)
+    return text;
+}
+
+
+weekTime('2019-04-23 12:00:00')
+weekTime('2019-04-19 12:00:00')
+</script>
+</html>
