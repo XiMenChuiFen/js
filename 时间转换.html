@@ -10,50 +10,95 @@
 <script>
 
 function weekTime(value){
+
     let text="";
-    let time=value.replace(/-/g,"/").split(" ");
+
+    //今天日期
     let getTime=new Date();
+    let YY=getTime.getFullYear();
     let MM=getTime.getMonth()+1;
     MM=MM<10?"0"+MM:MM;
     let DD=getTime.getDate();
     DD=DD<10?"0"+DD:DD;
-    let YMD=getTime.getFullYear()+"/"+MM+"/"+DD;
-    let week=getTime.getDay();
-    week=week==0?7:week;
-    let weekStart=DD-week+1;
-    let weekEnd=DD+7-week;
-    console.log(YMD,time,week,weekStart,weekEnd,getTime.getFullYear()+"/"+MM+"/"+weekStart);
-    if(YMD==time[0]){
-        text="今日 "+time[1]
-    }else if(new Date(time[0])>new Date(getTime.getFullYear()+"/"+MM+"/"+weekStart) && new Date(time[0])< new Date(getTime.getFullYear()+"/"+MM+"/"+weekEnd)){
-        text=value
+    let YMD=YY+"/"+MM+"/"+DD;
+    // console.log(YMD)
+
+    //傳入的日期
+    let timsString=value.replace(/-/g,"/")
+    let date = new Date(timsString);
+    let y = date.getFullYear();
+    let m = date.getMonth() + 1;
+    m = m < 10 ? "0" + m : m;
+    let d = date.getDate();
+    d = d < 10 ? "0" + d : d;
+    let ymd=y + "/" + m + "/" + d
+    let h=date.getHours();
+    h=h<10?'0'+h:h;
+    let mt=date.getMinutes();
+    mt=mt<10?'0'+mt:mt;
+    let s=date.getSeconds();
+    s=s<10?'0'+s:s;
+    let sfm=h+":"+mt+":"+s
+    // console.log(y + "/" + m + "/" + d,sfm)
+
+
+    //一周開始與結束日期
+    var nowTime = getTime.getTime() ;
+    var day = getTime.getDay();
+    var oneDayTime = 24*60*60*1000 ;
+    var mondayTime = nowTime - (day-1)*oneDayTime ;//显示周一
+    var sundayTime =  nowTime + (7-day)*oneDayTime ;//显示周日
+    let monday =new Date(mondayTime).getFullYear()+'/'+(new Date(mondayTime).getMonth()+1)+"/"+new Date(mondayTime).getDate()+" 00:00:00";
+    let sunday =new Date(sundayTime).getFullYear()+'/'+(new Date(sundayTime).getMonth()+1)+"/"+new Date(sundayTime).getDate()+" 23:59:59";
+
+    console.log(monday);
+    console.log(sunday)
+
+    // console.log(date.getTime(), new Date(monday).getTime(),new Date(sunday).getTime())
+    if(y==YY && m==MM && DD==d){
+        text='今天 '+ sfm;
     }else{
-        let w="";
-        let wek=new Date(time[0]).getDay();
-        if(wek==1){
-            w="一";
-        }else if(wek==2){
-            w="二";
-        }else if(wek==3){
-            w="三";
-        }else if(wek==4){
-            w="四";
-        }else if(wek==5){
-            w="五";
-        }else if(wek==6){
-            w="六";
-        }else if(wek==0){
-            w="日";
+
+        if(date.getTime()< new Date(monday).getTime() || date.getTime()> new Date(sunday).getTime()){
+            // console.log("不在星期内")
+            text=y+"-"+m+"-"+d+" "+sfm;
+        }else{
+            // console.log("在星期内")
+            let w="";
+            let wek=date.getDay();
+            if(wek==1){
+                w="一";
+            }else if(wek==2){
+                w="二";
+            }else if(wek==3){
+                w="三";
+            }else if(wek==4){
+                w="四";
+            }else if(wek==5){
+                w="五";
+            }else if(wek==6){
+                w="六";
+            }else if(wek==0){
+                w="日";
+            }
+            text="星期"+w+" "+sfm;
         }
-        text="星期"+w+" "+time[1] ;
+
 
     }
-    console.log(text)
+
+    // console.log(text)
     return text;
 }
+weekTime("2019/05/01/12:12:12")
+      // var now = new Date();
+      //   var nowTime = now.getTime() ;
+      //   var day = now.getDay();
+      //   var oneDayTime = 24*60*60*1000 ;
+      //   var MondayTime = nowTime - (day-1)*oneDayTime ;//显示周一
+      //   var SundayTime =  nowTime + (7-day)*oneDayTime ;//显示周日
+      //   console.log(new Date(MondayTime).getFullYear());
+      //   console.log(new Date(SundayTime))
 
-
-weekTime('2019-04-23 12:00:00')
-weekTime('2019-04-19 12:00:00')
 </script>
 </html>
